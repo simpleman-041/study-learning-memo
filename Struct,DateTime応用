@@ -1,0 +1,67 @@
+入力された２つの期間の重複があるか判定するアルゴリズム。
+構造体/DateTimeクラス/期間重複判定の振り返りが出来ます。
+
+using System;
+
+namespace Coding.Exercise
+{
+    public struct Event
+    {
+        // TODO: Add your code here
+        private DateTime _startDate;  //フィールドは基本的にprivateで。
+        private DateTime _endDate;
+        
+        public Event(DateTime startDate, DateTime endDate) // コンストラクタ
+        {
+            _startDate = startDate;
+            _endDate   = endDate;
+        }
+        
+        public double GetDuration()
+        {
+            // フィールドに代入された２つの日の日数間隔を返すメソッド。
+            TimeSpan sp = _endDate.Subtract(_startDate); 
+            double td   = sp.TotalDays;
+            return td;
+        }
+        
+        public bool IsOverlapping(Event otherEvent)
+        {
+            // 期間重複の判定をしています！引数でもう一つのEventオブジェクトを受け取り、開始日終了日を参照して比較している。
+            // 重ならない条件のほうが簡単であるため、その条件としてboolを代入。
+            // メソッド名がIsOverlappingであるから、逆にして重なるかどうかとしての判定を返す。
+            bool noOverlap =
+                _endDate   <= otherEvent._startDate || // this が完全に前
+                _startDate >= otherEvent._endDate;     // this が完全に後
+            return !noOverlap; 
+        }
+    }
+
+    public class Exercise
+    {
+        public void TestEvents()
+        {
+            // TODO: Add your code here
+            // DateTimeクラスのオブジェクトは年、月、日をカンマで区切る。
+            DateTime start1 = new DateTime(2024,7,1);
+            DateTime end1   = new DateTime(2024,7,10);
+            DateTime start2 = new DateTime(2024,7,5);
+            DateTime end2   = new DateTime(2024,7,15);
+
+            // EventメソッドはDateTimeオブジェクトを扱う。
+            // そのまま年月日で代入することはできないため注意。
+            Event first_Event = new Event(start1, end1);
+            Event secound_Event = new Event(start2, end2);
+
+            // ２つの期間を計算して代入。
+            double durationFirstEvent   = first_Event.GetDuration();
+            double durationSecoundEvent = secound_Event.GetDuration();
+            // 重なるか判定。
+            bool isOverlap = first_Event.IsOverlapping(secound_Event);
+            // お題分の出力！
+            Console.WriteLine($"Event 1 Duration: {durationFirstEvent} days");
+            Console.WriteLine($"Event 2 Duration: {durationSecoundEvent} days");
+            Console.WriteLine($"Events Overlap: {isOverlap}");
+        }
+    }
+}
