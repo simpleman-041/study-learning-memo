@@ -1,0 +1,92 @@
+using System;
+using System.Globalization;
+
+// PersonObjectの配列を、渡された比較方法に従って並び替えるプログラム。
+namespace LearningSomething
+{
+    // Comparisonデリゲートを使用して、比較方法を外部から注入できるようにしている。
+    public delegate int Comparison<T>(T x, T y);
+
+    public class Person
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
+
+        public Person(string name, int age)
+        {
+            Name = name;
+            Age = age;
+        }
+    }
+
+    public class PersonSorter
+    {
+        public void SortPeople(Person[] people, Comparison<Person> comparison)
+        // (Personオブジェクト配列、Personオブジェクトを比較するためのメソッド)を引数に取る
+        // メソッドはcomparisonデリゲートに代入される。
+        {
+            for (int i = 0; i < people.Length - 1; i++)
+            {
+                for (int j = i + 1; j < people.Length; j++)
+                {
+                    if (comparison(people[i], people[j]) > 0)
+                    // ここでは昇順で並び替えを行う。
+                    // comparisonは比較を行うデリゲートであるから方法を外から差し替えることができる
+                    {
+                        // Swap
+                        Person temp = people[i];
+                        people[i] = people[j];
+                        people[j] = temp;
+                    }
+                }
+            }
+        }
+    }
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+
+
+            Person[] people = new Person[]
+            {
+                new Person("Alice", 30),
+                new Person("Bob", 25),
+                new Person("Charlie", 35)
+            };
+
+            static int CompareByAge(Person x, Person y)
+            {
+                // CompareToメソッドは整数の戻り値によって比較結果を表す。
+                // xがyより小さい場合は負の値、等しい場合は0、xがyより大きい場合は正の値を返す。
+                return x.Age.CompareTo(y.Age);
+            }
+
+            static int CompareByName(Person x, Person y)
+            {
+                // 文字列の比較も同様にCompareToメソッドを使用できる。
+                // 名前のアルファベット順で比較。
+                return x.Name.CompareTo(y.Name);
+            }
+
+            PersonSorter sorter = new PersonSorter();
+            sorter.SortPeople(people, CompareByAge);
+
+            foreach (Person person in people)
+            {
+                Console.WriteLine($"{person.Name}, {person.Age}");
+            }
+
+            sorter.SortPeople(people, CompareByName);
+
+            foreach (Person person in people)
+            {
+                Console.WriteLine($"{person.Name}, {person.Age}");
+            }
+
+            
+        }
+    }
+}
