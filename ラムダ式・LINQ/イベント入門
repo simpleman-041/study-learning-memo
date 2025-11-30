@@ -1,0 +1,53 @@
+イベントとと聞くと、購読者だの通知だので難しく感じるが、
+内部デリゲートの購読リストに登録したメソッドを、契約に基づいて安全に呼び出す仕組み。
+簡単に言えば、メソッドの一括管理法である。
+
+〇メリットと特性
+クラス間の依存を完全に切り離せること。
+デリゲートが介入しているため、外部から勝手に発火できない。
+通知専用であり、外部からの上書き呼び出しが出来ない。
+
+namespace LearningAnything
+{
+    // シグネチャ(戻り値と引数)を指定するデリゲート
+    // このシグネチャに従うメソッドがイベントに参加できる。
+    public delegate void Notify(string message);
+
+    public class EventPublisher
+    {
+        // event+Notifyデリゲートによって通知の形式を示す。
+        // eventによる安全カバーによって外部アクセスを制限している。
+        // event本体である。
+        public event Notify OnNotify;
+        public void RaiseEvent(string message)
+        {
+            // 購読者がいるとき、そのメソッドを呼ぶ(Invoke)。
+            OnNotify?.Invoke(message);
+        }
+    }
+
+    public class EventSubscriber
+    {
+        //　通知を受ける側であるから形式に合ったメソッドであればよい。
+        //  特定のキーワードを書く必要はない。
+        public void OnEventRaised(string message)
+        {
+            Console.WriteLine($"Event received with message: {message}");
+        }
+    }
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            // 呼び出す側と呼びだされる側のオブジェクトを生成。
+            EventPublisher publisher = new EventPublisher();
+            EventSubscriber subscriber = new EventSubscriber();
+            
+            // デリゲートに呼び出される側のメソッドを追加。
+            publisher.OnNotify += subscriber.OnEventRaised;
+            // publisherオブジェクトはRaiseEventメソッドを含むデリゲートを持つため、呼びだすことが出来る。
+            publisher.RaiseEvent("Hello, World!");
+        }
+    }
+}
