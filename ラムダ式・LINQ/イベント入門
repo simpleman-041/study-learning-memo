@@ -22,6 +22,7 @@ namespace LearningAnything
         public void RaiseEvent(string message)
         {
             // 購読者がいるとき、そのメソッドを呼ぶ(Invoke)。
+            // Invokeはデリゲート完全依存。デリゲートに登録されたメソッドをすべて実行。
             OnNotify?.Invoke(message);
         }
     }
