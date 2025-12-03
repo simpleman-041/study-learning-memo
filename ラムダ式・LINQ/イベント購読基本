@@ -11,13 +11,13 @@ namespace Coding.Exercise // Defining the Coding.Exercise namespace
         // Declare the event using the delegate
         // Private field to store the stock price
         // Private field to store the threshold
-        //TODO
-        public event StockPriceChangedHandler? OnStockPriceChanged;
-        
+        //TODO  nullble型のeventデリゲートを定義。
+        public event StockPriceChangedHandler? OnStockPriceChanged; 
+        // 今回のテーマとなる2つの値を定義。
         private decimal _price;
         private decimal _threshold;
         // Property to get and set the stock price
-        
+        引数なしのプロパティでないとコード課題が通らなかったため、初期値を代入することにしている。
         public Stock()
         {
             _price = 0;
@@ -35,6 +35,7 @@ namespace Coding.Exercise // Defining the Coding.Exercise namespace
                 _price = value;
                 if(value < _threshold)
                 {
+                    // メソッドを介してInvokeすることで依存関係を生じさせない。
                     RaiseStockPriceChangedEvent("Stock Alert: Stock price is below threshold!");
                 }
             }
@@ -44,6 +45,7 @@ namespace Coding.Exercise // Defining the Coding.Exercise namespace
         public decimal Threshold
         {
             //TODO
+            // thresholdは動的な閾値をもたないため、処理の追加は必要ない。
             get{return _threshold;}
             set{_threshold = value;}
         }
@@ -53,6 +55,7 @@ namespace Coding.Exercise // Defining the Coding.Exercise namespace
         {
             // Invoke the event
             //TODO
+            // ここが発火ポイント。setterの呼び出しによって通知が行われる。
             OnStockPriceChanged?.Invoke(message);
         }
     }
@@ -64,6 +67,8 @@ namespace Coding.Exercise // Defining the Coding.Exercise namespace
         //TODO
         public void OnStockPriceChanged(string message)
         {
+            // 購読側のメソッド。message引数はsetterで与えられている。
+            // setterはRaiseメソッドを介し、Invokeしてこのメソッドを発動している。
             Console.WriteLine(message);
         }
     }
@@ -76,22 +81,26 @@ namespace Coding.Exercise // Defining the Coding.Exercise namespace
         {
             // Create instances of Stock and StockAlert
             //TODO
+            // まずはオブジェクトを作ります。
             var stock = new Stock();
             var stockAlert = new StockAlert();
             // Subscribe to the stock price changed event
             //TODO
+            //stockオブジェクトが持つデリゲートにstockAlertオブジェクトのメソッドを購読させます。
             stock.OnStockPriceChanged += stockAlert.OnStockPriceChanged;
             // Set the alert threshold
             //TODO
+            // Threholdをプロパティを介して代入しましょう。
+            // オブジェクトの持つフィールドへの代入は基本的にコンストラクタを介しましょう！
             stock.Threshold = 120;
             // Simulate stock price changes
             //TODO
+            // 動的(直接的)な値の変化。
             stock.Price = 150;
             stock.Price = 130;
             stock.Price = 110;
             // Wait for user input to close the console
             //TODO
-            Console.ReadLine();
         }
     }
 }
