@@ -30,3 +30,60 @@ public class EventArgs
 EventArgsは「イベント用の引数クラス」であることを明示するマーカー。
 イベント引数に対して型制約を行う→(!TEventArgsはEventArgsを継承しなければならない!)
 
+using System.ComponentModel;
+
+namespace LearningAnything
+{
+    public class TemperatureChangedEventArgs : EventArgs
+    {
+        public int Temperature { get; }
+        public TemperatureChangedEventArgs(int temperature)
+        {
+            Temperature = temperature;
+        }
+
+        public class TemperatureMonitor
+        {
+            public event EventHandler<TemperatureChangedEventArgs> TemperatureChanged;
+            private int _temperature;
+
+            public int Temperature
+            {
+                get { return _temperature; }
+                set
+                {
+
+                    if (_temperature != value)
+                    {
+                        _temperature = value;
+                        OnTenmeratureChanged(new TemperatureChangedEventArgs(_temperature));
+                    }
+                }
+            }
+
+            protected virtual void OnTenmeratureChanged(TemperatureChangedEventArgs e)
+            {
+                TemperatureChanged?.Invoke(this, e);
+            }
+
+            public class TemperatureAlert
+            {
+                public void OnTemperatureChanged(object sender, TemperatureChangedEventArgs e)
+                {
+                    Console.WriteLine($"Alert: {e.Temperature} sender is {sender}");
+                }
+            }
+
+            internal class Program
+            {
+                static void Main(string[] args)
+                {
+                    TemperatureMonitor monitor = new TemperatureMonitor();
+                    TemperatureAlert alert = new TemperatureAlert();
+                    monitor.TemperatureChanged += alert.OnTemperatureChanged;
+                    monitor.Temperature = 35; // This will trigger the alert
+                }
+            }
+        }
+    }
+}
