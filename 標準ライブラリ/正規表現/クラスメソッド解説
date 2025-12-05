@@ -1,4 +1,16 @@
-◯ Matchとは
+◯ Regex とは
+→ 文字列を検索して、すべてのMatchを返すクラス。
+Regex → MatchCollection → Match → GroupCollection → Group
+という階層になっている。
+ただ数珠つながりになっているわけではない。
+
+Regex には MatchCollectionがある。
+MatchCollection には たくさんのMatchがある。
+MatchにはGroupCollectionがある。
+GroupCollectionには たくさんのGroupがある。
+という感じ。単体が複数を持つイメージだ。
+
+◯ Match とは
 → 引数に取る文字列に対して、Regexオブジェクトから指定された検索を行う。
 → クラスであり、そのオブジェクトは主に4つの情報を持つ。
 ・ .Value → 全体一致
