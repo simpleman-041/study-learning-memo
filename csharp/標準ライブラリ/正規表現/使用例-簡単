@@ -1,0 +1,31 @@
+using System.ComponentModel;
+using System.Text.RegularExpressions; // 正規表現を扱う際に必要なusing;
+
+namespace LearningAnything
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string pattern = @"\d+"; // 検索したい文字列を指定
+            Regex regex = new Regex(pattern); // Regexオブジェクトは引数に取る検索文字列を記憶。
+                                              // patternに代入された文字列を正規表現用にする。
+
+            string text = "There are 15 apples and 30 bananas."; // 検索される文字列。
+            
+            MatchCollection matches = regex.Matches(text); // MatchCollectionクラスはMatch(ヒット部分)を全件まとめたList
+            Console.WriteLine($"Found {matches.Count} matches:{text}"); // MatchCollectionオブジェクト.Countは件数をint型で返すメソッド。
+
+            foreach (Match hit in matches) // matchesには単体のヒット部分が入る。それを扱うためのMatchクラス。
+            {
+                GroupCollection groups = hit.Groups;　// GroupCollectionはグループの集合()を扱う。
+                                                      // 調べたら思ったより複雑なので別ファイルで解説しますsry。
+                                                      // Matchオブジェクト.Groupsはヒットした部分を返す。
+                Console.WriteLine($"{groups[0].Value} found at {groups[0].Index}"); // GroupCollectionオブジェクト+インデックス指定は
+                                                                                    // .Valueで一致部分。.Indexでインデックス番号を返す。
+            }
+        }
+    }
+}
+    
+

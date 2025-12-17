@@ -1,0 +1,46 @@
+XAMLはHTMLのようなマークアップ言語。C#コードと組み合わせることでアプリを制作できる。
+<~~~>で始まり、必ず</>で終わる。一行の場合は<~~~/>で完結。
+XAMLにおけるUIの設計は行列を用いて行われる。それぞれの行、列サイズを調整、セルに機能を付与することで設計できる。
+横線である "行"が Row  /  縦線である "列" が Columnだ。
+丸やひし形といった図形はTemplateを使うことで表現できる。
+
+◯行列サイズ調整
+Row なら Height
+Column なら Width
+=" "に記述する数値、記号によってサイズが調整できる。
+→ Auto 
+セルの中身の要素サイズに応じてセルが大きくなる。
+文字列を配置したとき、それがセル範囲内に収まるようにセル側が大きくなる。
+→ *
+空いている領域を比率で分ける。
+10/*/10 の場合は残った範囲すべてを取る。
+1*/2* の場合は 1:2の割合でセルを取る。
+<Grid>
+    <Grid.RowDefinitions>
+        <RowDefinition Height = "10" />
+        <RowDefinition Height = "Auto" />
+        <RowDefinition Height = "Auto" />
+        <RowDefinition Height = "10" />
+        <RowDefinition Height = "*" />
+        <RowDefinition Height = "10" />
+    </Grid.RowDefinitions>
+
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width = "10" />
+        <ColumnDefinition Width = "Auto" />
+        <ColumnDefinition Width = "*" />
+        <ColumnDefinition Width = "10" />
+
+    </Grid.ColumnDefinitions>
+
+    <Label Grid.Row="1" Grid.Column="1" Margin="2" Content="Name"/>
+
+    <TextBox Text="{Binding Name, Mode=OneWayToSource}" Grid.Row="1" Grid.Column="2" Margin="2" />
+
+    <Label Content="Age" Margin="2" Grid.Column="1" Grid.Row="2" />
+
+    <TextBox Text="{Binding Age,Mode=OneWayToSource}" Grid.Column="2" Grid.Row="2" Margin="2"/>
+
+    <Button Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2"  Content="Info" Click="Button_Click" />
+
+</Grid>

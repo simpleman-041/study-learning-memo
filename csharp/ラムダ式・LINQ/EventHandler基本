@@ -1,0 +1,89 @@
+EventHandlerはsender + EventArgsを受け取る標準デリゲート。
+一言で言うならば、イベント通知専用の定型デリゲートである。
+Publisher → 通知専用デリゲート → Subscriber
+「通知」というのは「内部のデリゲートをInvokeして、登録されたメソッドを順番に呼ぶ」だけ。
+一般に用いられる通知とは似て非なる概念のように捉えたほうが良い。
+
+◯event + EventHandler + デリゲートによって
+➀ += でメソッドを登録できる。 (デリゲート由来)
+➁ Invoke or OnXxx はPublisherだけが呼び出せる。(event由来)
+➂ デリゲートが外部から勝手に上書きされない。(event由来)     
+➃ イベント引数のみを取り扱う。(EventHandler由来)
+上の流れを理解したうえで話を進めると分かりやすくなる。
+
+public delegate void EventHandler<TEventArgs>(object sender, TEventArgs e)
+    where TEventArgs : EventArgs;
+
+object senderにはイベントを発火したオブジェクト参照が入る。
+EventArgs eにはイベントに関する追加情報(一般的にプロパティを持つだけのクラス)が入る。
+
+しれっとEventArgsが継承されている。
+以下基底クラス。プロパティもロジックもほぼない。
+中身のない共通インスタンスがある。
+public class EventArgs
+{
+    //　中身のない共通インスタンスだけ持つ。
+    public static readonly EventArgs Empty = new EventArgs();
+    public EventArgs() { }
+}
+つまり、、、
+EventArgsは「イベント用の引数クラス」であることを明示するマーカー。
+イベント引数に対して型制約を行う→(!TEventArgsはEventArgsを継承しなければならない!)
+
+using System.ComponentModel;
+
+namespace LearningAnything
+{
+    public class TemperatureChangedEventArgs : EventArgs
+    {
+        public int Temperature { get; }
+        public TemperatureChangedEventArgs(int temperature)
+        {
+            Temperature = temperature;
+        }
+
+        public class TemperatureMonitor
+        {
+            public event EventHandler<TemperatureChangedEventArgs> TemperatureChanged;
+            private int _temperature;
+
+            public int Temperature
+            {
+                get { return _temperature; }
+                set
+                {
+
+                    if (_temperature != value)
+                    {
+                        _temperature = value;
+                        OnTenmeratureChanged(new TemperatureChangedEventArgs(_temperature));
+                    }
+                }
+            }
+
+            protected virtual void OnTenmeratureChanged(TemperatureChangedEventArgs e)
+            {
+                TemperatureChanged?.Invoke(this, e);
+            }
+
+            public class TemperatureAlert
+            {
+                public void OnTemperatureChanged(object sender, TemperatureChangedEventArgs e)
+                {
+                    Console.WriteLine($"Alert: {e.Temperature} sender is {sender}");
+                }
+            }
+
+            internal class Program
+            {
+                static void Main(string[] args)
+                {
+                    TemperatureMonitor monitor = new TemperatureMonitor();
+                    TemperatureAlert alert = new TemperatureAlert();
+                    monitor.TemperatureChanged += alert.OnTemperatureChanged;
+                    monitor.Temperature = 35; // This will trigger the alert
+                }
+            }
+        }
+    }
+}

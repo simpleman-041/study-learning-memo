@@ -1,0 +1,26 @@
+namespace MyApp.Models
+{
+    class Person
+    {
+        public string Name = "Dai";
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Person p = new Person();　　　　　 ←オブジェクト(p)生成
+        Console.WriteLine(p.ToString());　←オブジェクトに対してToString()
+    }
+}
+実行結果⇒　MyApp.Models.Program
+           (namespace)  (class)
+オブジェクトに対する.ToString()はオブジェクトが属している名前空間とクラス(完全修飾名)が返される。
+.ToString()そのものをオーバーライドすることでオブジェクト内部の情報を文字列に変換できる。
+
+以下がC#内部のデフォルト実装。
+public virtual string ToString()
+{
+    return GetType().FullName; // クラスの完全名を返す
+}

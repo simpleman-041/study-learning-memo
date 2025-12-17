@@ -1,0 +1,29 @@
+class Animal　→ 親クラス(第一世代)
+{
+    public virtual void Speak() => Console.WriteLine("Animal");
+}
+
+// Dog はここでsealedキーワードによって封印：Dog より下（Bulldog など）は上書き不可
+class Dog : Animal　→　子クラス(第二世代)
+{
+    public sealed override void Speak() => Console.WriteLine("Dog");
+}
+
+// Cat はsealedをつけず、封印しない：さらに下の PersianCat で上書き可能
+class Cat : Animal　→　子クラス(第二世代)
+{
+    public override void Speak() => Console.WriteLine("Cat");
+}
+
+// ▼ さらに下位クラス
+class Bulldog : Dog　→　第三世代クラス
+    // public override void Speak() {} // エラー（Dogでsealed済み）
+}
+
+class PersianCat : Cat　→　第三世代クラス
+{
+    public override void Speak() => Console.WriteLine("PersianCat"); // OK（Catはsealedしていない）
+}
+
+オーバーライドした子クラスが下位クラスのオーバーライドを禁止するということ。
+そもそもオーバーライドを制限する場合はvirtualを親クラスにつけなければOK！

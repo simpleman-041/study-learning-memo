@@ -1,0 +1,19 @@
+<TextBox Text="{Binding Name, Mode=TwoWay}" Grid.Row="1" Grid.Column="2" Margin="2" />
+TextBoxはユーザが自由に文字列を入力できるツール。今回はName,Ageプロパティを持つPeopleクラスを別で用意している。
+Bindingによってプロパティを指定。Modeによって入力を受け取るか受け取らないか設定できる。
+◯３つのモード！(光のモード！輝彩滑刀！！！)
+1．OneWay
+→ 初期化による値しか受け取らない。ユーザー入力による変更を受け付けない。
+2．TwoWay
+→ 初期化による値が初期値として設定。ユーザは自由に変更できる。
+3. OneWayToSource
+→ 初期化による値を受け付けない。ユーザ入力だけを受け付ける。
+4. OneTime
+→ 一度きり変更を受け付ける。定数といった変更が起こり得ない値に対して使用。
+
+◯ コード例
+<Label Grid.Row="1" Grid.Column="1" Margin="2" Content="Name"/>
+<TextBox Text="{Binding Name, Mode=OneWayToSource}" Grid.Row="1" Grid.Column="2" Margin="2" />
+
+<Label Content="Age" Margin="2" Grid.Column="1" Grid.Row="2" />
+<TextBox Text="{Binding Age,Mode=OneWayToSource}" Grid.Column="2" Grid.Row="2" Margin="2"/>

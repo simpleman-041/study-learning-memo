@@ -1,0 +1,64 @@
+抽象層、具象層、オーケストレーター、実行の解説です。
+
+using System;
+
+namespace Challenge
+{
+    // 抽象クラス
+    public interface IPaymentProcessor 
+    {
+        // メソッド所持の契約をする。
+        // 「金額を受け取って支払い処理を行う」契約（仕様）
+        void ProcessPayment(decimal amount);
+    }
+
+    // 具象クラス
+    public class CreditCardProcessor : IPaymentProcessor 
+    {
+        // 抽象における契約に従って処理を実装。
+        public void ProcessPayment(decimal amount)
+        {
+            // クレジットカードでの支払い処理（ここでは例として出力）
+            Console.WriteLine($"Processing credit card payment of {amount:C}");
+        }
+    }
+
+    // オーケストレーター
+    public class PaymentService
+    {
+        // 支払い実行におけるオーケストレーター
+        // 具体的な支払い方法には依存せず、抽象（IPaymentProcessor）に依存する。
+        // 抽象に属するインスタンスが代入できる。
+        private readonly IPaymentProcessor _paymentProcessor;
+
+        public PaymentService(IPaymentProcessor paymentProcessor) // 引数には具象のインスタンスが入る。
+        {
+            // 依存性の注入（DI）：具体的な実装インスタンスを受け取って保持する
+            _paymentProcessor = paymentProcessor ?? throw new ArgumentNullException(nameof(paymentProcessor));
+        }
+
+        public void MakePayment(decimal amount)
+        {
+            // フィールドの静的型がIPaymentProcessorなので、契約にあるメソッドを呼べる。
+            // 実行時には中身の実装（例：CreditCardProcessor）のProcessPaymentが呼ばれる（動的ディスパッチ）。
+            _paymentProcessor.ProcessPayment(amount);
+        }
+    }
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            // 左辺（インターフェース型）× 右辺（具象インスタンス）はサブタイプ多態性（ポリモーフィズム）の基本形。
+            // STEP1.具体の生成を行う。
+            IPaymentProcessor creditCardProcessor = new CreditCardProcessor();
+
+            // 支払いサービスに「支払い戦略（実装）」を注入して使う
+            // STEP2.生成した具体の注入を行う
+            PaymentService paymentService = new PaymentService(creditCardProcessor);
+            //引数に応じた処理を行う。
+            paymentService.MakePayment(100.00m);
+        }
+    }
+}
+

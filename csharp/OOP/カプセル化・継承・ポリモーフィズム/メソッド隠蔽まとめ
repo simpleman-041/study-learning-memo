@@ -1,0 +1,27 @@
+class Animal
+{
+    public void Speak() => Console.WriteLine("Animal: 何かが鳴いた");
+}
+
+class Dog : Animal
+{
+    public new void Speak() => Console.WriteLine("Dog: ワン！");
+}
+
+Animal myPet = new Dog();
+myPet.Speak();  // 👉 「Animal: 何かが鳴いた」になる
+Dog myDog = new Dog();
+myDog.Speak();  // 👉 「Dog: ワン！」になる
+
+宣言が隠蔽したクラスによるものなら隠蔽したメソッドの処理を行い、
+親クラスによる宣言の場合は親クラスの挙動をする。
+
+例えるならば人によって態度を変えるような挙動をする。
+母親(親クラス)による呼び出しなら、親の指示(処理)に従う。
+しかし、自分が呼び出しなら、自分の指示に乗っ取る。
+
+メソッド隠蔽を使うのは
+・親クラスにvirtualがないため、オーバーライドができない。
+・同じメソッド名を使いたいが、ポリモーフィズムは不要。
+・古いAPIとの互換性を保ちつつ、新しい動作を導入したい
+このような場合のみであり、ほとんどがoverrideで完結する。

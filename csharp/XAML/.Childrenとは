@@ -1,0 +1,35 @@
+◯.Childrenの役割
+→コンテナの中に配置されたUIコントロールを一覧で保持している「子要素リスト」
+ コンテナとは複数のUI要素を持つことができるクラス。~Panel系クラスが該当する。
+ 内部ではListのようにUIを保持する。(UI ElementCollectionが正式名称)
+ .Childrenでアクセス。
+
+◯使用例
+TodoListはStackPanelオブジェクトである。
+TodoList.Children.Add(todoItem);
+.Childrenでアクセス→.Addで追加処理をしている。
+構造は以下の通りになっている。まんまリストの構造を取っている。StackPanel TodoList<TextBox>{}みたいに。
+StackPanel
+ ├─ Children[0] = TextBlock("買い物する")
+ ├─ Children[1] = TextBlock("宿題をする")
+ ├─ Children[2] = TextBlock("運動する")
+
+◯.Childrenでよく使うメソッド・プロパティ一覧
+→メソッド一覧
+1．Add(UI Element name)
+子要素の追加。
+2. Remove(UI Element name)
+指定した要素の削除。
+3. RemoveAt(int index)
+→指定番号を削除。
+4. Clear()
+すべての子要素を削除。
+5. Insert(int index, UI Element name)
+指定した位置に挿入。
+→プロパティ一覧
+1. Count
+要素数を返す
+2. Children[index]
+子要素を取り出せる。
+Name.Children[0]のように使う。.Children.Childrenではないぞ！
+

@@ -1,0 +1,10 @@
+◯ 構文例
+<Label Grid.Row="1" Grid.Column="1" Margin="2" Content="Name"/>
+<Button Grid.Row="4" Grid.Column="1"  Grid.ColumnSpan="2"  Content="Info" Click="Button_Click" />
+
+Label や Button は コントロール というUIの部品。
+Grid.Row / Grid.Column は それぞれ"Row = 行"と"Column = 列"の指定を行っている。
+Margin は 要素の外側に余白をつくる。上下左右の４方向に定義可能。
+ColumnSpan は 列におけるセル結合。2というのは自身を起点に 右へ横2列分結合する という意味。
+Content は ""内に書かれた文字列をセル内に配置。
+Click は クリックされたときに""内に書かれた名前のメソッドを呼び出す。

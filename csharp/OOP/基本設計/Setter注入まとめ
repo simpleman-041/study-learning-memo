@@ -1,0 +1,47 @@
+public interface IPaymentProcessor 契約クラス
+{
+    void ProcessPayment(decimal amount);　契約
+}
+
+public class CreditCardProcessor : IPaymentProcessor　実装クラス
+{
+    public void ProcessPayment(decimal amount)
+    {
+        Console.WriteLine($"クレジットカードで {amount} 円支払いました。");　実装
+    }
+}
+
+public class PaymentService　オーケストレーター
+{
+    // Setterを通して依存関係を注入できるようにする
+    public IPaymentProcessor? Processor { private get; set; }　プロパティ
+
+    public void Pay(decimal amount)
+    {
+        if (Processor == null)　
+        {
+            Console.WriteLine("⚠ 支払い処理が設定されていません。");
+            return;
+        }
+        Processor.ProcessPayment(amount);
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        // ① 依存オブジェクトを生成
+        var creditProcessor = new CreditCardProcessor();
+
+        // ② オーケストレーター（調整役）を生成
+        var service = new PaymentService();
+
+        // ③ Setterを通じて依存性を注入
+        service.Processor = creditProcessor;
+        ProcessorはPaymentService内のProcessorプロパティを指す。
+
+        // ④ メソッド実行（内部でProcessorが利用される）
+        service.Pay(1000m);
+    }
+}

@@ -1,0 +1,35 @@
+// baseキーワードの利用方法をまとめています。
+namespace Coding.Exercise
+{
+    public class Person
+    {
+        public string Name; //フィールドは頭文字が大文字である点に注意。
+        public int    Id;
+        
+        // TODO: Declare a constructor that takes a name and prints a message
+        public Person(string name)
+        {
+            Name = name;
+            Console.WriteLine($"Person constructor: {Name}");
+        }
+    }
+
+    public class Employee : Person
+    {
+        // TODO: Declare a constructor that takes a name and an ID, and calls the base class constructor
+        public Employee (string name, int id) : base(name)  //基底クラス由来の情報を格納する引数を自身も用意する必要がある。
+        {                                                   // baseによる呼び出しは基底クラスに完全一致する必要がある。(コンパイルエラーの原因)
+            Id = id;
+            Console.WriteLine($"Employee constructor: {Name}, ID: {Id}");
+        }
+    }
+
+    public class Exercise
+    {
+        public void PrintMessages()
+        {
+            // TODO: Create an instance of Employee and print the messages
+            Employee ourEmployee = new Employee("John Doe",123); //コンストラクタ内部の処理は生成時点で実行されるため
+        }                                                          メソッドのような書き方をする必要がない。
+    }
+}

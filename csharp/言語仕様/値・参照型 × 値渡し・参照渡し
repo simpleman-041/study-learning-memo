@@ -1,0 +1,72 @@
+# =========================================
+
+# ◆ 構造体(struct) / クラス(class) × 値渡し / 参照渡し まとめ
+
+# =========================================
+
+## ▼ 振る舞いの一覧
+
+| 型                       | 渡し方     | 挙動                               |
+| ----------------------- | ------- | -------------------------------- |
+| **struct + 値渡し**        | （デフォルト） | 値が完全にコピーされ、**独立**する              |
+| **struct + ref/out/in** | 参照渡し    | 変数そのものにアクセスでき、**元の値が書き換わる**      |
+| **class + 値渡し**         | （デフォルト） | “参照（住所）”がコピーされ、**同じオブジェクトを共有**する |
+| **class + ref/out**     | 参照渡し    | 参照そのものを変更でき、**別のオブジェクトを差し替え可能**  |
+
+---
+
+## ▼ パターンごとの具体例
+
+---
+
+### ➀ 値型 + 値渡し（struct デフォルト）
+
+```csharp
+struct Point { public int X; }
+
+void Modify(Point p) { p.X = 10; }
+
+Point a = new Point { X = 1 };
+Modify(a);
+Console.WriteLine(a.X); // 1 ← a と p が完全に独立している
+```
+
+---
+
+### ➁ 値型 + ref（参照渡し）
+
+```csharp
+void Modify(ref Point p) { p.X = 10; }
+
+Point a = new Point { X = 1 };
+Modify(ref a); // a という変数そのものを直接扱える
+Console.WriteLine(a.X); // 10 ← 元の変数が書き換わった
+```
+
+---
+
+### ➂ 参照型 + 値渡し（class デフォルト）
+
+```csharp
+class Person { public string Name; }
+
+void Modify(Person p) { p.Name = "Hanako"; }
+
+Person a = new Person { Name = "Taro" };
+Modify(a); // p は a と同じオブジェクトを参照する
+Console.WriteLine(a.Name); // Hanako ← オブジェクトの中身が共有されている
+```
+
+---
+
+### ➃ 参照型 + ref（参照渡し）
+
+```csharp
+void Replace(ref Person p) { p = new Person { Name = "Hanako" }; }
+
+Person a = new Person { Name = "Taro" };
+Replace(ref a); 
+Console.WriteLine(a.Name); // Hanako ← a の参照そのものが新しいオブジェクトへ差し替わった
+```
+
+

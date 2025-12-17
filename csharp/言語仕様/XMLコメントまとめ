@@ -1,0 +1,34 @@
+/// <summary>　
+/// このクラスはユーザー情報を管理します。
+/// </summary>　⇒　クラスの概要を説明
+public class User
+{
+    /// <summary>
+    /// ユーザー名を取得または設定します。
+    /// </summary>　⇒　フィールドの説明
+    public string Name { get; set; }
+
+    /// <summary>
+    /// ユーザーの挨拶を表示します。
+    /// </summary>　⇒　メソッドの説明
+    /// <param name="greeting">挨拶のメッセージ</param>　⇒　引数の説明。
+    /// <returns>整形された挨拶文</returns>              ⇒  戻り値の説明。　　　　　　　 
+    public string SayHello(string greeting)
+    {
+        return $"{greeting}, {Name}!";
+    }
+}
+
+#基本構文
+/// <xxxxx> 対応する説明 </xxxxx>
+閉じる際はスラッシュをつけて同様に書く。
+<xxxxx>には以下のようなパターンがある。
+<summary>　メソッドやクラスの概要
+<param>  　引数の説明
+<returns>  戻り値の説明
+<remarks>  補足説明
+<exception>投げる可能性のある例外
+<example>  使用例を示す
+
+XMLコメントを書くことでクラスやメソッドにカーソルを合わせると
+記述した概要が表示されるようになる。

@@ -1,0 +1,40 @@
+## Stateful Class
+Statefulはデータ(フィールド)を持つ。
+newでインスタンスを生成し、それぞれが独立した状態を持つ。
+フィールド、コンストラクタ、メソッドを持つ
+
+public class Player
+{
+    public string Name { get; private set; }
+    public int HP { get; private set; }
+
+    public Player(string name)
+    {
+        Name = name;
+        HP = 100;
+    }
+
+    public void TakeDamage(int amount)
+    {
+        HP -= amount;
+    }
+}
+
+// 使い方
+Player p1 = new Player("ダイ");
+p1.TakeDamage(20);
+Console.WriteLine(p1.HP);  // 80
+-------------------------------------------------------
+## Stateless Class
+状態を持たず、呼ばれるたびに同一の計算や処理だけを行う。
+staticメソッドにしてインスタンス化を不要にする。
+
+public static class MathUtil
+{
+    public static int Add(int a, int b) => a + b;
+    public static int Subtract(int a, int b) => a - b;
+}
+
+// 使い方
+int result = MathUtil.Add(5, 3);
+Console.WriteLine(result);  // 8

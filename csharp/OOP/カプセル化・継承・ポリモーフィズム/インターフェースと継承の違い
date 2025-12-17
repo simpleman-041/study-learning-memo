@@ -1,0 +1,57 @@
+# 🧩 インターフェースと基底クラスの違いまとめ（C#）
+
+## 🔹 基本比較
+| 観点         | インターフェース     | 基底クラス   |
+| ------      | ----------          | ------- |
+| 定義するもの | 契約（仕様）         | 共通処理    |
+| 実装の有無   | なし                | あり      |
+| 継承数       | 複数可              | 1つのみ    |
+| 主な目的     | 異なる系統の共通操作 | 同系統の再利用 |
+| 関係性       | 実装契約            | 継承・拡張   |
+基底クラスの複数継承が禁止されるのはダイヤモンド継承問題が発生するから。
+→派生クラスが複数経路から基底クラスを参照することでコンパイラが判断できなくなる。
+---
+
+## 🟦 インターフェースの例
+共通の契約を「守らせたい」ならインターフェース。
+
+public interface IPlayable {
+    void Play(); //契約を定義
+}
+
+public class CDPlayer : IPlayable {
+    public void Play() => Console.WriteLine("CDを再生中..."); //契約に従ってメソッドに処理を加える
+}
+
+public class MP3Player : IPlayable {
+    public void Play() => Console.WriteLine("MP3を再生中...");
+}
+// オブジェクトをリストに格納
+List<IPlayable> players = new List<IPlayable> {
+    new CDPlayer(),
+    new MP3Player()
+};
+// foreachで一つずつ取り出して実行
+foreach (var p in players)
+    p.Play();
+
+## 🟦 基底クラスの例
+共通の行動を「まとめて使いたい」場合に使用
+public class Enemy {
+    public int HP { get; set; } = 100;
+
+    public virtual void Attack() {
+        Console.WriteLine("敵が攻撃した！");
+    }
+}
+
+public class Boss : Enemy {
+    public override void Attack() {
+        Console.WriteLine("ボスが強力な攻撃をした！");
+    }
+}
+
+Enemy e1 = new Enemy();
+Enemy e2 = new Boss();
+e1.Attack(); // 敵が攻撃した！
+e2.Attack(); // ボスが強力な攻撃をした！

@@ -1,0 +1,13 @@
+◯デリゲートは以下の2つの大きな役割を担う。
+デリゲートはメソッドの集合を扱う仕組み。イベントはデリゲートを通知専用に特化している。
+
+➀イベント通知の"契約型"として使われる。
+public event EventHandler OnDone;
+これは「sender + EventArgs」を受け取るメソッドのみ登録できる。
+
+➁複数のメソッドをまとめて実行する呼び出しリストとして働く。
+Action action = MethodA;
+action += MethodB;
+action += MethodC;
+
+action(); // A → B → C が順番に実行される

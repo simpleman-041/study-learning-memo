@@ -1,0 +1,108 @@
+⚠以下のコードは文法に誤りがあるコードです！
+ミスを記録して同じミスを繰り返さないようにする目的で作成しています。
+
+◯今回のミスまとめ
+1．コンストラクタの型がフィールドと一致しない。
+2．自分自身のインスタンスであればオブジェクト名.と書く必要がない。
+3．インスタンス生成において引数がない。
+4．イベント購読はメソッド名だけを渡す。
+5．プロパティを通じて代入するため、オブジェクト.大文字開始で書く。
+
+using System; // Importing the System namespace
+
+namespace Coding.Exercise // Defining the Coding.Exercise namespace
+{
+    // Define the delegate that will be used for the event
+    public delegate void StockPriceChangedHandler(string message);
+
+    // Define the Stock class which includes the event system
+    public class Stock
+    {
+        // Declare the event using the delegate
+        // Private field to store the stock price
+        // Private field to store the threshold
+        //TODO
+        public event StockPriceChangedHandler OnStockPriceChanged;
+        
+        private decimal _price;
+        private decimal _threshold;
+        // Property to get and set the stock price
+        
+        public Stock(double price, double threshold)　！ミス1！
+        {
+            _price = price;
+            _threshold = threshold;
+        }
+        
+        public decimal Price
+        {
+            // Set the new price
+            // Raise the event if the price drops below the threshold
+            //TODO
+            get{return _price;}
+            set
+            {
+                _price = value;
+                if(value < _threshold)
+                {
+                    ！ミス２！
+                    stock.RaiseStockPriceChangedEvent("Stock Alert: Stock price is below threshold!");
+                }
+            }
+        }
+
+        // Property to get and set the alert threshold
+        public decimal Threshold
+        {
+            //TODO
+            get{return _threshold;}
+            set{_threshold = value;}
+        }
+
+        // Method to raise the stock price changed event
+        protected virtual void RaiseStockPriceChangedEvent(string message)
+        {
+            // Invoke the event
+            //TODO
+            OnStockPriceChanged?.Invoke(message);
+        }
+    }
+
+    // Define the subscriber class which reacts to the event
+    public class StockAlert
+    {
+        // Method that handles the event and prints a message to the console
+        //TODO
+        public void OnStockPriceChanged(string message)
+        {
+            Console.WriteLine(message);
+        }
+    }
+
+    
+    // Program class to simulate the stock price changes and test the event system
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Create instances of Stock and StockAlert
+            //TODO
+            var stock = new Stock();
+            var stockAlert = new stockAlert();　！ミス３！
+            // Subscribe to the stock price changed event
+            //TODO
+            stock.OnStockPriceChanged += stockAlert.OnStockPriceChanged();　！ミス４！
+            // Set the alert threshold
+            //TODO　　　　　　
+            stock.threshold = 120;　！以下ミス５！
+            // Simulate stock price changes
+            //TODO
+            stock.price = 150;
+            stock.price = 130;
+            stock.price = 110;
+            // Wait for user input to close the console
+            //TODO
+            Console.ReadLine();
+        }
+    }
+}
