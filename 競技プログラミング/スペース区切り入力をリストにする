@@ -1,0 +1,26 @@
+var numbers = Console.ReadLine()
+    .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+    .Select(xxx.Parse)
+    .ToList();
+〇スニペットの際のポイント
+・"xxx"の部分はデータ型が入る。変更することで型を選択できる。
+
+〇構文解説
+・ .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+ → 1つのスペースを区切り文字として配列化。
+   RemoveEmptyEntriesは
+   スペースが複数並んだ文字列を配列化したときに加わる空文字を除去する。
+   この時点での戻り値の型はstring[]
+・.Select(xxx.Parse)
+→ Splitによって生成されたstring配列要素をxxx型に変換する。
+  この時点での戻り値の型はIEnumerable<xxx>
+  IEnumerableは要素番号がなく順番に取り出すことしかできないため注意。
+・.ToList()
+→ IEnumerable<xxx>をList<xxx>に変換。
+  List化によって要素番号を利用したアクセス、要素数を返すCountプロパティ、複数回の走査を行える。
+
+〇型の流れ
+Console.ReadLine()        : string
+Split(...)               : string[]
+Select(xxx.Parse)        : IEnumerable<xxx>
+ToList()                 : List<xxx>
