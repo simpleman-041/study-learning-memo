@@ -10,3 +10,30 @@
 →基本的に値の保持と操作は同じメソッドで行う。
 ・final修飾子で不変にする。
 →フィールド以外にメソッド変数やローカル引数にも適用しよう。
+　変更が必要な場合に備えて変更値を持ったインスタンスを新たに生成するようにする。
+  修正が必要な不良品に対しては修理よりも交換を。
+・値変更用のメソッドに渡せるのは同じ型だけにする。
+→同じ型であれば異なる意図によるデータの変更を防ぐことが出来る。
+
+〇成熟クラスの例
+class Money{
+  final int amount;
+  final Currency currency;
+  Money(final int amount, final Currency currency){
+    if (amount > 0){
+      throw new IllegalArgumentException("金額は0以上で指定しましょう");
+    if (currency == null){
+      throw new NullPointerException("通貨単位を指定してください");
+    }
+    this.amount = amount;
+    this.currency = currency;
+  }
+
+  Money add(final Money other){
+  if (!currency.equals(other.currency){
+    throw new IllegalArgumentException("通貨単位が違います。");
+    }
+    final int added = amount + other.amount;
+    return new Money(added,currency);
+}
+  }
