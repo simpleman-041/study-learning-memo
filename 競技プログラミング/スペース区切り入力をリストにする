@@ -1,7 +1,7 @@
 var numbers = Console.ReadLine()
-    .Split(' ', StringSplitOptions.RemoveEmptyEntries)
-    .Select(xxx.Parse)
-    .ToList();
+                    　.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                    　.Select(xxx.Parse)
+                    　.ToList();
 〇スニペットの際のポイント
 ・"xxx"の部分はデータ型が入る。変更することで型を選択できる。
 
