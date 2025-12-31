@@ -1,0 +1,13 @@
+DBからデータを読み取る際にNULL許容の項目が含まれる場合注意が必要である。
+かならずDB上でNULLかどうかを確認してから取得するのが定石。
+以下はTodoListにおけるデータの取得の際にNULL例外の防止を施したコードである。
+
+// Memo（string）の場合
+string memo = reader.IsDBNull(2) ? null : reader.GetString(2);
+
+// DeadLine（DateTime）の場合
+DateTime? deadline = reader.IsDBNull(3) ? (DateTime?)null : reader.GetDateTime(3);
+
+以上のコードは
+もしかっこに書かれた要素番号の項目がDB的に空であればnullを入れる。そうでなければ読み取り代入する。
+ということだ。
