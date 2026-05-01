@@ -1,0 +1,9 @@
+入力が半角スペース、整数での入力に有効。 
+var nums = Console.ReadLine().Split().Select(int.Parse).ToArray();
+
+int a = nums[0];
+int b = nums[1];
+int c = nums[2];
+
+文字列のままで扱うなら
+var words = Console.ReadLine().Split();
