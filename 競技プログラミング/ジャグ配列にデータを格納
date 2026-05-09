@@ -1,0 +1,8 @@
+char[][] grid = new char[H][];
+
+for (int y = 0; y < H; y++)
+{
+    grid[y] = Console.ReadLine().ToCharArray();
+}
+Hは行数。二次元配列を扱うより、ジャグ配列を扱う方が柔軟性があり、入力がシンプルに済みやすい。
+これは一つの文字を扱うジャグ配列。
