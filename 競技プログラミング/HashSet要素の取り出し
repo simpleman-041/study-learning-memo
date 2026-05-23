@@ -1,0 +1,8 @@
+HashSetはインデックス番号を指定してデータを取り出すことが出来ない。
+順番が定義されていないデータのまとまりだから。
+そのため、for文を使ってHashSet[i]とすることはできない。
+列挙する場合はforeachを使うことで取り出せる。
+foreach (int x in set)
+{
+    Console.WriteLine(x);
+}
