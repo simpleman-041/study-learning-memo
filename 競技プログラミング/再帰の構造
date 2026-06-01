@@ -1,0 +1,57 @@
+再帰は分岐点を待機させながら1本の枝を最深部まで進み、戻ったら次の枝を試す仕組み。
+全てのパターンを見つける再帰の場合、以下の挙動をする。
+
+分岐点となる場所が待機する
+実行中の場所だけが最深部まで進む
+最深部に到達したら return する
+直前の分岐点が再開する
+その分岐点で次の候補を試す
+
+また同じパターンを選択しない理由は
+それぞれの分岐ごとに for 文がある
+その for 文は、再帰で奥に進んでいる間は待機している
+戻ってきたら、その for 文の続きから再開する　という構造をしているから。
+
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        bool[] used = new bool[3];
+        int[] order = new int[3];
+
+        Saiki(0, used, order);
+    }
+
+    static void Saiki(int depth, bool[] used, int[] order)
+    {
+        // 3個すべて選び終わったら、現在の並びを表示して終了
+        if (depth == 3)
+        {
+            Console.WriteLine(string.Join(" ", order));
+            return;
+        }
+
+        // 1, 2, 3 の中から、まだ使っていない数字を選ぶ
+        for (int i = 0; i < 3; i++)
+        {
+            // すでに使った数字なら、この候補は飛ばす
+            if (used[i])
+            {
+                continue;
+            }
+
+            // 今の depth に i + 1 を入れる
+            used[i] = true;
+            order[depth] = i + 1;
+
+            // 次の位置を決めに行く
+            Saiki(depth + 1, used, order);
+
+            // 戻ってきたら、今選んだ数字を解除する
+            used[i] = false;
+        }
+    }
+}
+
